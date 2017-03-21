@@ -2,7 +2,7 @@
 
 ![Swift](https://img.shields.io/badge/swift-3.0.2-brightgreen.svg)
 [![Build Status](https://api.travis-ci.org/reswifq/pool.svg?branch=master)](https://travis-ci.org/reswifq/pool)
-[![Code Coverage](https://codecov.io/gh/reswifq/pool/branch/master/graph/badge.svg)](https://codecov.io/gh/vapor/vapor)
+[![Code Coverage](https://codecov.io/gh/reswifq/pool/branch/master/graph/badge.svg)](https://codecov.io/gh/reswifq/pool)
 
 A generic object pool implementation for Swift that works on macOS and Linux.
 
