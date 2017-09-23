@@ -1,6 +1,6 @@
 # Pool
 
-![Swift](https://img.shields.io/badge/swift-3.1-brightgreen.svg)
+![Swift](https://img.shields.io/badge/swift-4.0-brightgreen.svg)
 [![Build Status](https://api.travis-ci.org/reswifq/pool.svg?branch=master)](https://travis-ci.org/reswifq/pool)
 [![Code Coverage](https://codecov.io/gh/reswifq/pool/branch/master/graph/badge.svg)](https://codecov.io/gh/reswifq/pool)
 
