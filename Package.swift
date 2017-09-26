@@ -4,10 +4,10 @@ import PackageDescription
 let package = Package(
 	name: "Pool",
 	products: [
-        .library(name: "Pool", targets: ["Pool"])
-    ],
+		.library(name: "Pool", targets: ["Pool"])
+	],
 	targets: [
-        .target(name: "Pool"),
-        .testTarget(name: "PoolTests", dependencies: ["Pool"])
+		.target(name: "Pool"),
+		.testTarget(name: "PoolTests", dependencies: ["Pool"])
 	]
 )

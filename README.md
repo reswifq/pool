@@ -15,9 +15,14 @@ import PackageDescription
 
 let package = Package(
     name: "YourProject",
-    targets: [],
+    products: [
+      .executable(name: "YourProject", targets: ["YourProject"])
+    ],
     dependencies: [
-        .Package(url: "https://github.com/reswifq/pool.git", majorVersion: 1)
+        .package(url: "https://github.com/reswifq/pool.git", .upToNextMajor(from: "1.2.0"))
+    ],
+    targets: [
+      .target(name: "YourProject", dependencies: ["Pool"])
     ]
 )
 ```
@@ -25,7 +30,7 @@ let package = Package(
 #### Create a pool of elements:
 
 ``` swift
-let pool = Pool(maxElementCount: 10) { 
+let pool = Pool(maxElementCount: 10) {
 	return "I am a pool element"
 }
 ```
