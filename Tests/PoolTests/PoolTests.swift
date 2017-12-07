@@ -29,6 +29,7 @@ class PoolTests: XCTestCase {
         ("testInitialization", testInitialization),
         ("testDraw", testDraw),
         ("testDrawWhenNoElementIsAvailable", testDrawWhenNoElementIsAvailable),
+        ("testDrawWithFactoryError", testDrawWithFactoryError),
         ("testRelease", testRelease),
         ("testDeinitAutomaticRelease", testDeinitAutomaticRelease)
     ]
@@ -63,6 +64,23 @@ class PoolTests: XCTestCase {
 
 
         XCTAssertEqual(pool.elementCount, 1)
+        XCTAssertTrue(pool.elements.isEmpty)
+    }
+
+    func testDrawWithFactoryError() throws {
+
+        let pool = Pool(maxElementCount: 5) { () -> String in
+            throw URLError(.badURL)
+        }
+
+        XCTAssertEqual(pool.elementCount, 0)
+        XCTAssertTrue(pool.elements.isEmpty)
+
+        XCTAssertThrowsError(try pool.draw(), "factoryError") { error in
+            XCTAssertTrue(error is PoolError)
+        }
+
+        XCTAssertEqual(pool.elementCount, 0)
         XCTAssertTrue(pool.elements.isEmpty)
     }
 

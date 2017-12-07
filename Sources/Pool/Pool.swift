@@ -22,10 +22,6 @@
 import Foundation
 import Dispatch
 
-public enum PoolError: Error {
-    case drawTimeOut
-}
-
 open class Pool<T> {
 
     // MARK: Initialization
@@ -34,7 +30,7 @@ open class Pool<T> {
      - parameter maxElementCount: Specifies the maximum number of element that the pool can manage.
      - parameter factory: Closure used to create new items for the pool.
      */
-    public init(maxElementCount: Int, factory: @escaping () -> T) {
+    public init(maxElementCount: Int, factory: @escaping () throws -> T) {
         self.factory = factory
         self.maxElementCount = maxElementCount
         self.semaphore = DispatchSemaphore(value: maxElementCount)
@@ -46,7 +42,7 @@ open class Pool<T> {
     public let maxElementCount: Int
 
     /// Closure used to create new items for the pool.
-    public let factory: () -> T
+    public let factory: () throws -> T
 
     // MARK: Storage
 
@@ -76,24 +72,26 @@ open class Pool<T> {
             throw PoolError.drawTimeOut
         }
 
-        var element: T!
-
-        self.queue.sync {
+        return try self.queue.sync {
 
             guard self.elements.isEmpty, self.elementCount < self.maxElementCount else {
 
                 // Use an existing element
-                element = self.elements.removeFirst()
-
-                return
+                return self.elements.removeFirst()
             }
 
             // Create a new element
-            element = self.factory()
-            self.elementCount += 1
-        }
+            do {
+                let element = try self.factory()
+                self.elementCount += 1
 
-        return element
+                return element
+
+            } catch {
+                self.semaphore.signal()
+                throw PoolError.factoryError(error)
+            }
+        }
     }
 
     /**
@@ -115,4 +113,9 @@ open class Pool<T> {
             self.semaphore.signal()
         }
     }
+}
+
+public enum PoolError: Swift.Error {
+    case drawTimeOut
+    case factoryError(Swift.Error)
 }
